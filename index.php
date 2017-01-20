@@ -1,3 +1,35 @@
+<?php include 'inc/fonctions.inc.php'; ?>
+<?php 
+  //EXPERIENCES  
+    $sql_exp = $pdoCV->query("SELECT * FROM t_experiences");
+    $sql_exp -> execute();
+    $nb_exp= $sql_exp->rowCount(); 
+?>
+<?php 
+  //FORMATION  
+    $sql_forma = $pdoCV->query("SELECT * FROM t_formation");
+    $sql_forma -> execute();
+    $nb_forma= $sql_forma->rowCount(); 
+?>
+<?php 
+  //LANGUES  
+    $sql_lang = $pdoCV->query("SELECT * FROM t_langue");
+    $sql_lang -> execute();
+    $nb_lang= $sql_lang->rowCount(); 
+?>
+<?php 
+  //LANGUES  
+    $sql_lois = $pdoCV->query("SELECT * FROM t_loisir");
+    $sql_lois -> execute();
+    $nb_lois= $sql_lois->rowCount(); 
+?>
+<?php 
+  //COMPETENCES  
+    $sql_comp = $pdoCV->query("SELECT * FROM t_competences");
+    $sql_comp -> execute();
+    $nb_comp= $sql_comp->rowCount(); 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,10 +41,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Landing Page - Start Bootstrap Theme</title>
+    <title>CV - Abdelkrim Benbakhti</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="FRONT/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Animation CSS -->
+    <link href="FRONT/css/animate.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="FRONT/css/landing-page.css" rel="stylesheet">
@@ -43,19 +78,19 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand topnav" href="#">Start Bootstrap</a>
+                <a class="navbar-brand topnav" href="#">Badwork</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#about">About</a>
+                        <a href="#cv">Mon CV</a>
                     </li>
                     <li>
-                        <a href="#services">Services</a>
+                        <a href="#portfolio">Portfolio</a>
                     </li>
                     <li>
-                        <a href="#contact">Contact</a>
+                        <a href="#blog">Blog</a>
                     </li>
                 </ul>
             </div>
@@ -73,15 +108,15 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-message">
-                        <h1>Landing Page</h1>
-                        <h3>A Template by Start Bootstrap</h3>
+                        <h1><?= $resultat['prenom'].' '.$resultat['nom'] ?></h1>
+                        <h3>Intégrateur / Developpeur Web</h3>
                         <hr class="intro-divider">
                         <ul class="list-inline intro-social-buttons">
                             <li>
-                                <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                                <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Instagram</span></a>
                             </li>
                             <li>
-                                <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                                <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">500px</span></a>
                             </li>
                             <li>
                                 <a href="#" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
@@ -105,13 +140,26 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
-                    <h2 class="section-heading">Death to the Stock Photo:<br>Special Thanks</h2>
-                    <p class="lead">A special thanks to <a target="_blank" href="http://join.deathtothestockphoto.com/">Death to the Stock Photo</a> for providing the photographs that you see in this template. Visit their website to become a member.</p>
+                    <h2 class="section-heading">Expérience</h2>
+                    <table class="table table-condensed">
+                    <?php
+                        while ($resultat=$sql_exp->fetch()){
+                            echo '<tr><td>'.$resultat['experience'].'</td><td>'.$resultat['titre_e'].'</td><td>'.$resultat['dates'].'</td><td>'.$resultat['description'].'</td></tr>';
+                        }?>
+                    </table>
+                    <hr class="section-heading-spacer">
                 </div>
                 <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="FRONT/img/ipad.png" alt="">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Formation</h2>
+                    <table class="table table-condensed">
+                    <?php
+                        while ($resultat=$sql_forma->fetch()){
+                            echo '<tr><td>'.$resultat['titre_f'].'</td><td>'.$resultat['sous_titre_f'].'</td><td>'.$resultat['dates_f'].'</td><td>'.$resultat['description_f'].'</td></tr>';
+                        }?>
+                    </table>
+                    <hr class="section-heading-spacer">
                 </div>
             </div>
 
@@ -127,13 +175,37 @@
 
             <div class="row">
                 <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
-                    <h2 class="section-heading">3D Device Mockups<br>by PSDCovers</h2>
-                    <p class="lead">Turn your 2D designs into high quality, 3D product shots in seconds using free Photoshop actions by <a target="_blank" href="http://www.psdcovers.com/">PSDCovers</a>! Visit their website to download some of their awesome, free photoshop actions!</p>
+                    <h2 class="section-heading">Compétences</h2>
+                    <table class="table">
+                    <?php
+                        while ($resultat=$sql_comp->fetch()){
+                            echo '<tr><td>'.$resultat['competence'].' <div class="progress"><div class="progress-bar progress-bar-success" style="width: '.$resultat['niveau'].'%;"></div></div></td></tr>';
+                        }?>
+                    </table>
+                    <hr class="section-heading-spacer">
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive" src="FRONT/img/dog.png" alt="">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Langues</h2>
+                    <table class="table">
+                    <?php
+                        while ($resultat=$sql_lang->fetch()){
+                            echo '<tr><td>'.$resultat['langue'].' <div class="progress"><div class="progress-bar progress-bar-success" style="width: '.$resultat['niveau'].'%;"></div></div></td></tr>';
+                        }?>
+                    </table>
+                    <hr class="section-heading-spacer">
+                </div>
+                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Loisirs</h2>
+                    <table class="table table-condensed">
+                    <?php
+                        while ($resultat=$sql_lois->fetch()){
+                            echo '<tr><td>'.$resultat['loisir'].'</td></tr>';
+                        }?>
+                    </table>
+                    <hr class="section-heading-spacer">
                 </div>
             </div>
 
@@ -151,11 +223,22 @@
                 <div class="col-lg-5 col-sm-6">
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
-                    <h2 class="section-heading">Google Web Fonts and<br>Font Awesome Icons</h2>
+                    <h2 class="section-heading">Contactez Moi</h2>
                     <p class="lead">This template features the 'Lato' font, part of the <a target="_blank" href="http://www.google.com/fonts">Google Web Font library</a>, as well as <a target="_blank" href="http://fontawesome.io">icons from Font Awesome</a>.</p>
                 </div>
                 <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="FRONT/img/phones.png" alt="">
+                    <form>
+                    <div class="form-group">
+                        <input type="text" placeholder="Nom"><br>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="email"><br>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" placeholder="Message"></textarea><br>
+                    </div>
+                        <button type="submit" class="btn btn-default">Envoyer</button>
+                    </form>
                 </div>
             </div>
 
@@ -172,15 +255,15 @@
 
             <div class="row">
                 <div class="col-lg-6">
-                    <h2>Connect to Start Bootstrap:</h2>
+                    <h2>Suivez Moi</h2>
                 </div>
                 <div class="col-lg-6">
                     <ul class="list-inline banner-social-buttons">
                         <li>
-                            <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                            <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Instagram</span></a>
                         </li>
                         <li>
-                            <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                            <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">500px</span></a>
                         </li>
                         <li>
                             <a href="#" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
@@ -202,19 +285,15 @@
                 <div class="col-lg-12">
                     <ul class="list-inline">
                         <li>
-                            <a href="#">Home</a>
+                            <a href="#">Mon CV</a>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
-                            <a href="#about">About</a>
+                            <a href="#about">Portfolio</a>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
-                            <a href="#services">Services</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#contact">Contact</a>
+                            <a href="#services">Blog</a>
                         </li>
                     </ul>
                     <p class="copyright text-muted small">Copyright &copy; Your Company 2014. All Rights Reserved</p>
