@@ -1,31 +1,67 @@
 <?php require 'pdoCV.php' ?> 
-  <?php 
-session_start();
-if(isset($_SESSION['connexion']) && $_SESSION['connexion']=='connecté'){//si la personne est connecté 
-    //et la valeur est bien celle de la page authentification
+<?php
+
+session_start();//à mettre dans toutes les pages SESSION et identification
+if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dessous
+
+    $pseudo=addslashes($_POST['pseudo']);
+    $mdp=addslashes($_POST['mdp']);
+
+    $sql = $pdoCV->prepare("SELECT * FROM t_utilisateur WHERE pseudo='$pseudo' AND mdp='$mdp'");//On vérifie le courriel et le mdp
+    $sql-> execute();
+    $nbr_utilisateur=$sql->rowCount();//on compte et s'il y est, le compte répond 1 sinon le compte répond 0 (est-ce le vrai admin ou pas)
+
+        if(isset($_SESSION['connexion'])&& $_SESSION['connexion'] == 'connecté') {
         $id_utilisateur=$_SESSION['id_utilisateur'];
         $prenom=$_SESSION['prenom'];
         $nom=$_SESSION['nom'];
-        echo '<br>'.$prenom.' '.$nom.' est connecté';
-}else{//l'utilisateur n'est pas connecté
-        header('location:../connexion/connexion.php');
-}
+        header('location:experiences.php');
+    }else{
+        header('location:index.php');
+        echo 'Erreur id';
+    }
 
-//pour se déconnecter
-if(isset($_GET['deconnect'])){
-    $_SESSION['connexion'] = ''; //on vide les variables de session
-    $_SESSION['id_utilisateur'] = '';
-    $_SESSION['prenom'] = '';
-    $_SESSION['nom'] = '';
+    if (isset($_GET['deconnect'])) {
+        $_SESSION['connexion']='';
+        $_SESSION['id_utilisateur']='';
+        $_SESSION['prenom']='';
+        $_SESSION['nom']='';
 
-    unset($_SESSION['connexion']);//on supprime cette variable
+        unset($_SESSION['connexion']);
 
-    session_destroy();//on detruit la session
+        session_destroy();
 
-    header('location:../index.php');
-}
+        header('location:index.php');
+    }
+?>
 
-?>    
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CONNEXION</title>
+</head>
+<body>
+
+
+<form method="post" action="">
+    <label>Pseudo</label><br>
+    <input type="text" name="pseudo" value="<?php if (isset($_POST['pseudo'])) {
+        echo $_POST['pseudo'];
+    }?>"><br><br>
+
+    <label>Mot de passe </label><br>
+    <input type="password" name="mdp" value="<?php if (isset($_POST['mdp'])) {
+        echo $_POST['mdp'];
+    }?>"><br><br>
+
+    <input type="submit" value="Connexion">
+</form>
+<br><br>
+
+
+
+
+<?= 'Fin'; ?>    
 
 <!--<nav class="navigation">
 	<ul>
@@ -41,9 +77,7 @@ if(isset($_GET['deconnect'])){
 
 <?php require '../inc/head.inc.php'; ?>
 
-        <body>
-            <header>
-              </header>
+
 
               <div id="mainContent">
               <h1 id="espaceAdmin">Espace administratif du site CV</h1>

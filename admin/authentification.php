@@ -20,7 +20,7 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
         $id_utilisateur=$_SESSION['id_utilisateur'];
         $prenom=$_SESSION['prenom'];
         $nom=$_SESSION['nom'];
-        header('location:index.php');
+        header('location:../index.php');
     }else{
         header('location:authentification.php');
     }

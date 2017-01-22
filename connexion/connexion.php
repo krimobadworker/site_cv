@@ -1,13 +1,13 @@
 
-<?php require '../admin/pdoCV.php' ?> 
+<?php require '../admin/pdoCV.php'; ?> 
 
 <?php
 
 
-if ($_POST) {
+//if ($_POST) {
 	//debug($_POST);
 
-	$resultat = $pdoCV -> prepare("SELECT * FROM t_utilisateur WHERE pseudo = :pseudo");
+/*	$resultat = $pdoCV -> prepare("SELECT * FROM t_utilisateur WHERE pseudo = :pseudo");
 	$resultat -> bindParam(':pseudo',$_POST['pseudo'],PDO::PARAM_STR);
 	$resultat ->execute();
 
@@ -21,7 +21,7 @@ if ($_POST) {
 			$_SESSION['membre']['email'] = $membre['email'];
 			Plus simple avec un boucle :*/
 
-			foreach ($pseudo as $indice => $valeur) {
+			/*foreach ($pseudo as $indice => $valeur) {
 				if($indice !='mdp'){
 					$_SESSION['pseudo'][$indice] = $valeur;
 				}
@@ -42,8 +42,50 @@ if ($_POST) {
 }
 
 
-$page="Connexion";
+$page="Connexion"; */
 ?>
+<?php
+
+session_start();//à mettre dans toutes les pages SESSION et identification
+if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dessous
+
+	$pseudo=addslashes($_POST['pseudo']);
+	$mdp=addslashes($_POST['mdp']);
+
+	$sql = $pdoCV->prepare("SELECT * FROM t_utilisateur WHERE pseudo='$pseudo' AND mdp='$mdp'");//On vérifie le courriel et le mdp
+    $sql-> execute();
+    $nbr_utilisateur=$sql->rowCount();//on compte et s'il y est, le compte répond 1 sinon le compte répond 0 (est-ce le vrai admin ou pas)
+
+    	if(isset($_SESSION['connexion'])&& $_SESSION['connexion'] == 'connecté') {
+        $id_utilisateur=$_SESSION['id_utilisateur'];
+        $prenom=$_SESSION['prenom'];
+        $nom=$_SESSION['nom'];
+        header('location:../index.php');
+    }else{
+        header('location:connexion.php');
+    }
+
+    if (isset($_GET['deconnect'])) {
+        $_SESSION['connexion']='';
+        $_SESSION['id_utilisateur']='';
+        $_SESSION['prenom']='';
+        $_SESSION['nom']='';
+
+        unset($_SESSION['connexion']);
+
+        session_destroy();
+
+        header('location:../index.php');
+    }
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CONNEXION</title>
+</head>
+<body>
+
 
 <form method="post" action="">
 	<label>Pseudo</label><br>
@@ -58,10 +100,11 @@ $page="Connexion";
 
 	<input type="submit" value="Connexion">
 </form>
+</body>
+</html>
 
 
 
 
-<!--<a href="../admin/index.php">HOME</a>-->
-
+<?= 'Fin'; ?>
 
