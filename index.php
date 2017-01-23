@@ -78,7 +78,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand topnav" href="#">Badwork</a>
+                <a class="navbar-brand topnav" href="admin/index.php">Badwork</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
