@@ -191,7 +191,7 @@
                     <table class="table">
                     <?php
                         while ($resultat=$sql_lang->fetch()){
-                            echo '<tr><td>'.$resultat['langue'].' <div class="progress"><div class="progress-bar progress-bar-success" style="width: '.$resultat['niveau'].'%;"></div></div></td></tr>';
+                            echo '<tr><td>'.$resultat['langue'].' <div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped" style="width: '.$resultat['niveau'].'%;"></div></div></td></tr>';
                         }?>
                     </table>
                     <hr class="section-heading-spacer">
