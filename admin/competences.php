@@ -163,12 +163,6 @@ echo $_SESSION['pseudo'];
                     }
 
             ?>
-            
-            
-            
-            
-         
-
-            
+          
         </body>
     </html>
