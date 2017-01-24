@@ -1,0 +1,53 @@
+@charset "utf-8";
+
+body {
+    color: #464646;
+    font: 300 13px/20px "Open Sans", sans-serif;
+}
+
+.experience{
+    background: #ddd;
+}
+
+.titre, .description, .sous-titre, .periode{
+    font-family: 'Helvetica Neue', sans-serif;
+    
+    
+}
+
+.titre{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.description{
+    font-weight: 300;
+    font-size: 12px;
+}
+
+.periode{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sous-titre{
+    font-weight: 300;
+    font-style: italic;
+    font-size: 10px;
+}
+
+.divider-vertical {
+    height: 40px;
+    margin: 0 9px;
+    border-left: 1px solid pink;
+    border-right: 1px solid blue;
+}
+    
+.section-background{
+    background: #fff none repeat scroll 0 0;
+    padding: 80px 60px;
+}
+
+.col-sm-6{
+    width: 50%;
+}

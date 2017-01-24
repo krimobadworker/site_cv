@@ -76,8 +76,9 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
         
         $competence = addslashes($_POST['competence']);
         $niveau = addslashes($_POST['niveau']);
+        $type = addslashes($_POST['type']);
         $id_competence = $_POST['id_competence'];
-        $pdoCV->exec("INSERT INTO t_competences VALUES(NULL, '$competence', '$niveau')");
+        $pdoCV->exec("INSERT INTO t_competences VALUES(NULL, '$competence', '$niveau', '$type')");
         
             header("location:../admin/competences.php");
                     exit();
@@ -123,23 +124,24 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
             
             <?php
             while ($resultat=$sql->fetch()){
-                echo $resultat['competence'].' '.$resultat['niveau'].' <a href="modif_competences.php?id_competence='. $resultat['id_competence'].'">modifier</a> <a href="competences.php?id_competence='. $resultat['id_competence'].'">supprimer</a> <br>';
+                echo $resultat['competence'].' '.$resultat['niveau'].' '.$resultat['type'].' '.'<a href="modif_competences.php?id_competence='. $resultat['id_competence'].'">modifier</a> <a href="competences.php?id_competence='. $resultat['id_competence'].'">supprimer</a> <br>';
             }
             
             ?>
             
 
 <?php
-echo $_SESSION['pseudo'];
+// echo $_SESSION['pseudo'];
 ?>
 
             
-<!--Formulaire d'insertion de competence-->
+<!-- Formulaire d'insertion de competence -->
             
             
             <form method="POST" action="competences.php">
                 
                     <input type="text" name="competence" size="20"  maxlength="35">
+                    <input type="text" name="type" size="20"  maxlength="35"><p>langage ou logiciel</p>
                     <input type="text" name="niveau" size="5"  maxlength="35"><br>
                     
                     <input type="submit" value="Envoyer" name="envoyer">
@@ -155,10 +157,13 @@ echo $_SESSION['pseudo'];
                 if(isset($_POST['niveau']))      $niveau=$_POST['niveau'];
                 else      $niveau="";
 
+                if(isset($_POST['type']))      $type=$_POST['type'];
+                else      $type="";
+
 
 
                 // On vérifie si les champs sont vides
-                if(empty($competence) OR empty($niveau)){
+                if(empty($competence) OR empty($niveau) OR empty($type)){
                     echo '<font color="red">Attention, aucun champ ne peut rester vide !</font>';
                     }
 

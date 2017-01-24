@@ -47,6 +47,7 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
         if($_POST['loisir']!=''){
         
         $loisir = addslashes($_POST['loisir']);
+        $fa_icon = addslashes($_POST['fa_icon']);
         $id_loisir = $_POST['id_loisir'];
         $pdoCV->exec("INSERT INTO t_loisir VALUES(NULL, '$loisir', '1')");
         
@@ -96,7 +97,7 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
             
             <?php
             while ($resultat=$sql->fetch()){
-                echo $resultat['loisir'].' <a href="modif_loisirs.php?id_loisir='. $resultat['id_loisir'].'">modifier</a> <a href="loisirs.php?id_loisir='. $resultat['id_loisir'].'">supprimer</a> <br>';
+                echo $resultat['loisir'].' '.$resultat['fa_icon']. '<a href="modif_loisirs.php?id_loisir='. $resultat['id_loisir'].'">modifier</a> <a href="loisirs.php?id_loisir='. $resultat['id_loisir'].'">supprimer</a> <br>';
             }
             
             ?>
@@ -106,7 +107,8 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
             
             <form method="POST" action="loisirs.php">
                 
-                    <input type="text" name="loisir" size="20"  maxlength="35"><br>
+                    <input type="text" name="loisir" size="20"  maxlength="35">
+                    <input type="text" name="fa_icon" size="20"  maxlength="35"><br>
                     
                     <input type="submit" value="Envoyer" name="envoyer">
                 
@@ -118,10 +120,13 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
                 if(isset($_POST['loisir']))      $loisir=$_POST['loisir'];
                 else      $loisir="";
 
+                if(isset($_POST['fa_icon']))      $fa_icon=$_POST['fa_icon'];
+                else      $fa_icon="";
+
 
 
                 // On vérifie si les champs sont vides
-                if(empty($loisir)){
+                if(empty($loisir) && empty($fa_icon)){
                     echo '<font color="red">Attention, aucun champ ne peut rester vide !</font>';
                     }
 

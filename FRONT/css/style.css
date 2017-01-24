@@ -1,7 +1,43 @@
 @charset "utf-8";
 
-body ul {
-list-style:none;
-margin-left:0;
-padding-left:0;
+body{
+	background: #ddd;
+}
+
+.newMiddleContent{
+	max-height: 720px;
+	/*height: 720px;*/
+	padding: 20%;
+}
+
+.home-background{
+	background-image: url(../images/home-bg-img.jpg);
+}
+
+.grey-background{
+	background-color: #ccc;
+}
+
+.section-background{
+	background-color: #ddd;
+}
+
+
+.skills{
+	text-align: center;
+}
+
+.hire-background{
+	background-image: url(../images/img6.jpg);
+}
+
+/*.image-layer{
+	max-height: 720px;
+	height: 720px;
+}*/
+
+.parallax-window {
+    min-height: 400px;
+    background: transparent;
+    padding: 0;
 }

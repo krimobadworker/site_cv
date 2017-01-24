@@ -46,6 +46,9 @@
     <!-- Bootstrap Core CSS -->
     <link href="FRONT/css/bootstrap.min.css" rel="stylesheet">
     
+    <!-- Style CSS -->
+    <link href="FRONT/css/style.css" rel="stylesheet">
+    
     <!-- Animation CSS -->
     <link href="FRONT/css/animate.css" rel="stylesheet">
 
@@ -139,18 +142,92 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <div class="clearfix"></div>
+                <div class="col-lg-6 col-sm-6 experience">
+                    
                     <h2 class="section-heading">Expérience</h2>
-                    <table class="table table-condensed">
+                        <div class="col-md-12">
+                        
+                            <div class="row">
+                                <?php
+                                while ($resultat=$sql_exp->fetch()){
+//                                    echo '<div class="col-md-10 col-md-push-2">
+//                                            <h4 class="titre">'.$resultat['experience'].'</h4><p class="description">'.$resultat['description'].'</p></div>
+//                                        <div class="col-md-2 col-md-pull-10">
+//                                            <br>
+//                                            <p class="periode">'.$resultat['dates'].'</p>
+//                                            <p class="sous-titre">'.$resultat['description'].'</p>
+//                                        </div>
+//                                    </div>';}
+                                ?>
+                                
+                                <div class="col-md-8 col-md-push-4">
+                                    <h4 class="titre"><?= $resultat['experience']?></h4>
+                                    <p class="description"><?= $resultat['description']?></p>
+                                </div>
+                                <div class="col-md-4 col-md-pull-8">
+                                    <br>
+                                    <p class="periode"><?= $resultat['dates']?></p>
+                                    <p class="sous-titre"><?= $resultat['titre_e']?></p>
+                                </div>
+                                <?php } ?>
+                            </div>
+                           
+                        </div> 
+                    
+                    
+                </div>
+                <div class="col-lg-6 col-sm-6 formation">
+                    
+                     <h2 class="section-heading"></h2>
+                        <div class="col-md-12">
+                        
+                            <div class="row">
+                                <?php
+                                while ($resultat=$sql_exp->fetch()){
+                                    echo '<div class="col-md-10 col-md-push-2">
+                                            <h4 class="titre">'.$resultat['experience'].'</h4><p class="description">'.$resultat['description'].'</p></div>
+                                        <div class="col-md-2 col-md-pull-10">
+                                            <br>
+                                            <p class="periode">'.$resultat['dates'].'</p>
+                                            <p class="sous-titre">'.$resultat['description'].'</p>
+                                        </div>
+                                    </div>';
+                                }?>
+                            </div>
+                           
+                        </div> 
+                    
+                    
+                </div>
+            </div>
+
+        </div>
+        </div>
+    <div class="content-section-a">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-6 experience">
+                    
+                    <h2 class="section-heading">Expérience</h2>
+                    <div class="col-md-12">
+                        <div class="row">
                     <?php
                         while ($resultat=$sql_exp->fetch()){
-                            echo '<tr><td>'.$resultat['experience'].'</td><td>'.$resultat['titre_e'].'</td><td>'.$resultat['dates'].'</td><td>'.$resultat['description'].'</td></tr>';
+                            echo '<div class="col-md-10 col-md-push-2">
+                                    <h4 class="titre">'.$resultat['experience'].'</h4><p class="description">'.$resultat['description'].'</p></div>
+                                <div class="col-md-2 col-md-pull-10">
+                                    <br>
+                                    <p class="periode">'.$resultat['dates'].'</p>
+                                    <p class="sous-titre">'.$resultat['description'].'</p>
+                                </div>
+                            </div>';
                         }?>
-                    </table>
+                        </div>
+                    </div>
                     <hr class="section-heading-spacer">
                 </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+                <div class="col-lg-6 col-sm-6 col-lg-offset-6">
                     <div class="clearfix"></div>
                     <h2 class="section-heading">Formation</h2>
                     <table class="table table-condensed">
@@ -160,7 +237,7 @@
                         }?>
                     </table>
                     <hr class="section-heading-spacer">
-                </div>
+                </div> 
             </div>
 
         </div>
@@ -191,7 +268,8 @@
                     <table class="table">
                     <?php
                         while ($resultat=$sql_lang->fetch()){
-                            echo '<tr><td>'.$resultat['langue'].' <div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped" style="width: '.$resultat['niveau'].'%;"></div></div></td></tr>';
+                            echo '<tr><td>'.$resultat['langue'].' <div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
+                            aria-valuenow="'.$resultat['niveau'].'" aria-valuemin="0" aria-valuemax="100"  style="width: '.$resultat['niveau'].'%;">'.$resultat['niveau'].'%</div></div></td></tr>';
                         }?>
                     </table>
                     <hr class="section-heading-spacer">
