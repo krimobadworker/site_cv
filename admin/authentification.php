@@ -1,5 +1,5 @@
 <?php include '../inc/fonctions.inc.php'; ?>
-<?php require 'pdoCV.php' ?> 
+<?php require 'pdoCV.php'; ?> 
 <?php
 
 session_start();//à mettre dans toutes les pages SESSION et identification
@@ -12,29 +12,23 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
     $sql-> execute();
     $nbr_utilisateur=$sql->rowCount();//on compte et s'il y est, le compte répond 1 sinon le compte répond 0 (est-ce le vrai admin ou pas)
 
-        if(isset($_SESSION['connexion'])&& $_SESSION['connexion'] == 'connecté') {
-        $id_utilisateur=$_SESSION['id_utilisateur'];
-        $prenom=$_SESSION['prenom'];
-        $nom=$_SESSION['nom'];
-        header('location:langues.php');
-    }else{
-        header('location:../index.php');
-        echo 'Erreur id';
-    }
+       if($nbr_utilisateur==0){
+            $msg_connexion_err="Erreur d'authentification !";
+        }else{
+            $utilisateur = $sql->fetch();
+            echo $pseudo;
+            $_SESSION['connexion']='connecté';
+            $_SESSION['id_utilisateur']=$utilisateur['id_utilisateur'];
+            $_SESSION['prenom']=$utilisateur['prenom'];
+            $_SESSION['nom']=$utilisateur['nom'];
 
-    if (isset($_GET['deconnect'])) {
-        $_SESSION['connexion']='';
-        $_SESSION['id_utilisateur']='';
-        $_SESSION['prenom']='';
-        $_SESSION['nom']='';
+            header('location:../admin/index.php');
 
-        unset($_SESSION['connexion']);
+        }
+}
 
-        session_destroy();
-
-        header('location:../index.php');
-    }exit(); }
 ?>
+
 
 <?php
 $sql = $pdoCV->query("SELECT * FROM t_utilisateur");
@@ -55,12 +49,15 @@ $sql = $pdoCV->query("SELECT * FROM t_utilisateur");
     </head>
 
     <body>
-     <form method="post" action="">
-            <input type="text" name="pseudo" value="<?php if (isset($_POST['pseudo'])) {
-                echo $_POST['pseudo']; }?>" placeholder="Pseudo"><br>
-            <input type="password" name="mdp" value="<?php if (isset($_POST['mdp'])) {
-                echo $_POST['mdp']; }?>" placeholder="Mot de passe"><br>
-            <input type="submit" value="Connexion">
-        </form>
+    
+         <div class="row">
+            <form class="form-horizontal" method="POST" action="">
+                <input type="text" name="pseudo" value="<?php if (isset($_POST['pseudo'])) {
+                    echo $_POST['pseudo']; }?>" placeholder="Pseudo"><br>
+                <input type="password" name="mdp" value="<?php if (isset($_POST['mdp'])) {
+                    echo $_POST['mdp']; }?>" placeholder="Mot de passe"><br>
+                <input type="submit" name="connexion" value="Connexion">
+            </form>
+        </div>
     </body>
 </html>

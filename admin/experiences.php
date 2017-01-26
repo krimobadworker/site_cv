@@ -1,62 +1,21 @@
-<?php
-$pdoCV = new PDO('mysql:host=localhost;dbname=site_cv', 'root', '', array(
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
-    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
-));
-?>
-<?php
+<?php include 'top.php'; ?>
 
-session_start();//à mettre dans toutes les pages SESSION et identification
-if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dessous
+<?php 
 
-    $pseudo=addslashes($_POST['pseudo']);
-    $mdp=addslashes($_POST['mdp']);
-
-    $sql = $pdoCV->prepare("SELECT * FROM t_utilisateur WHERE pseudo='$pseudo' AND mdp='$mdp'");//On vérifie le courriel et le mdp
-    $sql-> execute();
-    $nbr_utilisateur=$sql->rowCount();//on compte et s'il y est, le compte répond 1 sinon le compte répond 0 (est-ce le vrai admin ou pas)
-
-        if(isset($_SESSION['connexion'])&& $_SESSION['connexion'] == 'connecté') {
-        $id_utilisateur=$_SESSION['id_utilisateur'];
-        $prenom=$_SESSION['prenom'];
-        $nom=$_SESSION['nom'];
-        header('location:experiences.php');
-    }else{
-        header('location:../index.php');
-        echo 'Erreur id';
-    }
-
-    if (isset($_GET['deconnect'])) {
-        $_SESSION['connexion']='';
-        $_SESSION['id_utilisateur']='';
-        $_SESSION['prenom']='';
-        $_SESSION['nom']='';
-
-        unset($_SESSION['connexion']);
-
-        session_destroy();
-
-        header('location:../index.php');
-    }exit(); }
-?>
-
-
-<?php
-// INSERT EXPERIENCE          
-            // On commence par récupérer les champs
-                if(isset($_POST['experience'])){
-                    if($_POST['experience']!='' && $_POST['titre_e']!='' && $_POST['dates']!='' && $_POST['description']!=''){
-                    
-                    $experience = addslashes($_POST['experience']);
-                    $titre_e = addslashes($_POST['titre_e']);
-                    $dates = addslashes($_POST['dates']);
-                    $description = addslashes($_POST['description']);
-                        
-             // on insert une nouvelle exp       
-                    $pdoCV->exec("INSERT INTO t_experiences VALUES (NULL, '$experience', '$titre_e', '$dates', '$description', '$competence_id', '1')");
-                    header("location:../admin/experiences.php");
+    if(isset($_POST['experience'])){
+        
+        if($_POST['experience']!=''){
+        
+        $experience = addslashes($_POST['experience']);
+        $titre_e = addslashes($_POST['titre_e']);
+        $dates = addslashes($_POST['dates']);
+        $description = addslashes($_POST['description']);
+        $id_experience = $_POST['id_experience'];
+        $pdoCV->exec("INSERT INTO t_experiences VALUES(NULL, '$experience', '$titre_e', '$dates', '$description', 1)");
+        
+            header("location:../admin/experiences.php");
                     exit();
-                    }//on ferme le if
+                }//on ferme le if
             }//on ferme le ifisset
 
 //suppression d'une experience
@@ -69,94 +28,108 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
         
     }//ferme ifisset suppr
 ?>
+<?php require 'nav.html'; ?>
 
-<?php require '../inc/head.inc.php'; ?>
+        <?php
+              //affichage d'une seule info
+        $sql = $pdoCV->query("SELECT * FROM t_utilisateur");
+        $resultat = $sql->fetch();
+        echo '<div class="identite"> Bonjour ' .$resultat['prenom'].' '.$resultat['nom'].'<br/>
+        </div><br><br>';
+        ?>
+         
 
-        <body>
-            <header>
-              </header>
 
-              <div id="mainContent">
-              <h1 id="espaceAdmin">Espace administratif du site CV: experience</h1>
-            <?php
-                  //affichage d'une seule info
-            $sql = $pdoCV->query("SELECT * FROM t_utilisateur");
-            $resultat = $sql->fetch();
-            echo '<div class="identite"> Bonjour ' .$resultat['prenom'].' '.$resultat['nom'].'<br/>
-            </div>';
-            ?>
+<!-- FORMULAIRE -->
+           
+            <div class="row">
+                <form class="form-horizontal" method="POST" action="">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Expérience</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="experience" class="form-control" id="inputEmail3" value="<?= isset($resultat2['experience']) ? $resultat2['experience'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Titre</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="titre_e" class="form-control" id="inputEmail3" value="<?= isset($resultat2['titre_e']) ? $resultat2['titre_e'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Dates</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="dates" class="form-control" id="inputEmail3" value="<?= isset($resultat2['dates']) ? $resultat2['dates'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="description" class="form-control" id="inputEmail3" value="<?= isset($resultat2['description']) ? $resultat2['description'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <input type="submit" class="btn btn-default"></input>
+                    </div>
+                  </div>
+                </form>
 
-        
-              </div><br><br>
+            <div class="row">
+                <?php 
+                  //recherche de plusieurs infos  
+                $sql = $pdoCV->query("SELECT * FROM t_experiences");
+                $sql -> execute();
+                $nb_comp= $sql->rowCount(); 
+                ?>
+                <div class="col-lg-6 col-lg-offset-2">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Expérience</th>
+                            <th>Titre</th>
+                            <th>Dates</th>
+                            <th>Description</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                        </tr>
+                        <?php while ($resultat=$sql->fetch()){ ?>
+                        <tr>
+                            <td><?= $resultat['experience'] ?></td>
+                            <td><?= $resultat['titre_e'] ?></td>
+                            <td><?= $resultat['dates'] ?></td>
+                            <td><?= $resultat['description'] ?></td>
+                            <td><a href="modif_experiences.php?id_experience=<?= $resultat['id_experience']?>">modifier</a></td>
+                            <td><a href="experiences.php?id_experience=<?= $resultat['id_experience']?>">supprimer</a></td>
+                        </tr>
+                    <?php } ?>
+                    </table>
+                </div>
+            </div><!-- end row -->
+        </div><!-- end wrapper -->
 
-            <?php 
-              //recherche de plusieurs infos  
-            $sql = $pdoCV->query("SELECT * FROM t_experiences");
-            $sql -> execute();
-            $nb_exp= $sql->rowCount(); 
-            ?>
             
-            <?php
-            while ($resultat=$sql->fetch()){
-                echo $resultat['experience'].' '.$resultat['titre_e'].' '.$resultat['dates'].' '.$resultat['description'].' <a href="modif_experiences.php?id_experience='. $resultat['id_experience'].'">modifier</a> <a href="experiences.php?id_experience='. $resultat['id_experience'].'">supprimer</a> <br>';
-            }
-            
-//            echo '<pre>';
-//            print_r($experience);
-//            echo'</pre>';
-            
-            ?>
-            
-<!--Formulaire d'insertion d'exp-->
-            
-            
-            <form method="POST" action="experiences.php">
-                
-                    <input type="text" name="experience" size="20"  maxlength="35">
-                    <input type="text" name="titre_e" size="20"  maxlength="35"><br>
-                    <input type="text" name="dates" size="20"  maxlength="70">
-                    <input type="text" name="description" size="20"  maxlength="70"><br>
-                    <input type="submit" value="Envoyer" name="envoyer">
-                
-            </form>
-            
-            <?php
+<!-- FIN PAGE D'ACCUEIL -->
+
+
+        <?php
             
             // On commence par récupérer les champs
-                if(isset($_POST['experience']))      $nom=$_POST['experience'];
+                if(isset($_POST['experience']))      $competence=$_POST['experience'];
                 else      $experience="";
-
-                if(isset($_POST['titre_e']))      $prenom=$_POST['titre_e'];
+            
+                if(isset($_POST['titre_e']))      $niveau=$_POST['titre_e'];
                 else      $titre_e="";
 
-                if(isset($_POST['dates']))      $email=$_POST['dates'];
+                if(isset($_POST['dates']))      $type=$_POST['dates'];
                 else      $dates="";
 
-                if(isset($_POST['description']))      $icq=$_POST['description'];
+                if(isset($_POST['description']))      $type=$_POST['description'];
                 else      $description="";
 
                 // On vérifie si les champs sont vides
-                if(empty($experience) OR empty($titre_e) OR empty($dates) OR empty($description)){
-                    echo '<font color="red">Attention, aucun champ ne peut rester vide !</font>';
-                    }
-
+                //if(empty($competence) OR empty($niveau) OR empty($type)){
+                    //echo '<font color="red">Attention, aucun champ ne peut rester vide !</font>';
+                    //}
             ?>
-            
-            
-            
-            
-         
 
-            
-        </body>
-    </html>
-
-
-
-
-
-
-
-
-
-
+<?php include 'bottom.php'; ?>

@@ -1,54 +1,15 @@
-<?php
-$pdoCV = new PDO('mysql:host=localhost;dbname=site_cv', 'root', '', array(
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
-    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
-));
-?>
-<?php
+<?php include 'top.php'; ?>
 
-session_start();//à mettre dans toutes les pages SESSION et identification
-if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dessous
+  <?php 
 
-    $pseudo=addslashes($_POST['pseudo']);
-    $mdp=addslashes($_POST['mdp']);
-
-    $sql = $pdoCV->prepare("SELECT * FROM t_utilisateur WHERE pseudo='$pseudo' AND mdp='$mdp'");//On vérifie le courriel et le mdp
-    $sql-> execute();
-    $nbr_utilisateur=$sql->rowCount();//on compte et s'il y est, le compte répond 1 sinon le compte répond 0 (est-ce le vrai admin ou pas)
-
-        if(isset($_SESSION['connexion'])&& $_SESSION['connexion'] == 'connecté') {
-        $id_utilisateur=$_SESSION['id_utilisateur'];
-        $prenom=$_SESSION['prenom'];
-        $nom=$_SESSION['nom'];
-        header('location:langues.php');
-    }else{
-        header('location:../index.php');
-        echo 'Erreur id';
-    }
-
-    if (isset($_GET['deconnect'])) {
-        $_SESSION['connexion']='';
-        $_SESSION['id_utilisateur']='';
-        $_SESSION['prenom']='';
-        $_SESSION['nom']='';
-
-        unset($_SESSION['connexion']);
-
-        session_destroy();
-
-        header('location:../index.php');
-    }exit(); }
-?>    
-
-<?php 
-//insertion d'une nouvelle langue
-    if(isset($_POST['langue'])){//premier name du formulaire
+    if(isset($_POST['langue'])){
         
-        if($_POST['langue']!='' && $_POST['niveau']!=''){// n'est pas vide
+        if($_POST['langue']!=''){
         
         $langue = addslashes($_POST['langue']);
         $niveau = addslashes($_POST['niveau']);
-        $pdoCV->exec("INSERT INTO t_langue VALUES (NULL, '$langue', '$niveau')");
+        $id_langue = $_POST['id_langue'];
+        $pdoCV->exec("INSERT INTO t_langue VALUES(NULL, '$langue', '$niveau')");
         
             header("location:../admin/langues.php");
                     exit();
@@ -64,79 +25,88 @@ if(isset($_POST['connexion'])){//['connexion'] du name du submit du form ci dess
         exit();
         
     }//ferme ifisset suppr
-
 ?>
+<?php require 'nav.html'; ?>
+
+        <?php
+              //affichage d'une seule info
+        $sql = $pdoCV->query("SELECT * FROM t_utilisateur");
+        $resultat = $sql->fetch();
+        echo '<div class="identite"> Bonjour ' .$resultat['prenom'].' '.$resultat['nom'].'<br/>
+        </div><br><br>';
+        ?>
+         
 
 
 
 
-<?php require '../inc/head.inc.php'; ?>
+            <!-- FORMULAIRE -->
+            <div class="row">
+                <form class="form-horizontal" method="POST" action="langues.php">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Langue</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="langue" class="form-control" id="inputEmail3" placeholder="Langue">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Niveau</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="niveau" class="form-control" id="inputEmail3" placeholder="Niveau">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <input type="submit" class="btn btn-default"></input>
+                    </div>
+                  </div>
+                </form>
+            </div><!-- end row -->
+            <div class="row">
+                <?php 
+                  //recherche de plusieurs infos  
+                $sql = $pdoCV->query("SELECT * FROM t_langue");
+                $sql -> execute();
+                $nb_comp= $sql->rowCount(); 
+                ?>
+                <div class="col-lg-6 col-lg-offset-2">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>langue</th>
+                            <th>Niveau</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                        </tr>
+                        <?php while ($resultat=$sql->fetch()){ ?>
+                        <tr>
+                            <td><?= $resultat['langue'] ?></td>
+                            <td><?= $resultat['niveau'] ?></td>
+                            <td><a href="modif_langues.php?id_langue=<?= $resultat['id_langue']?>">modifier</a></td>
+                            <td><a href="langues.php?id_langue=<?= $resultat['id_langue']?>">supprimer</a></td>
+                        </tr>
+                    <?php } ?>
+                    </table>
+                </div>
+            </div><!-- end row -->
+        </div><!-- end wrapper -->
 
-        <body>
-            <header>
-              </header>
+            
+<!-- FIN PAGE D'ACCUEIL -->
 
-              <div id="mainContent">
-              <h1 id="espaceAdmin">Espace administratif du site CV: langues</h1>
-            <?php
-                  //affichage d'une seule info
-            $sql = $pdoCV->query("SELECT * FROM t_utilisateur");
-            $resultat = $sql->fetch();
-            echo '<div class="identite"> Bonjour ' .$resultat['prenom'].' '.$resultat['nom'].'<br/>
-            </div>';
-            ?>
 
-        
-              </div><br><br>
-            
-<?php 
-              //recherche de plusieurs infos  
-            $sql = $pdoCV->query("SELECT * FROM t_langue");
-            $sql -> execute();
-            $nb_lang= $sql->rowCount(); 
-            ?>
-            
-            <?php
-            while ($resultat=$sql->fetch()){
-                echo $resultat['langue'].' '.$resultat['niveau'].' <a href="modif_langues.php?id_langue='. $resultat['id_langue'].'">modifier</a> <a href="langues.php?id_langue='. $resultat['id_langue'].'">supprimer</a> <br>';
-            }
-            
-            ?>
-            
-<!--Formulaire d'insertion de langue-->
-            
-            
-            <form method="POST" action="langues.php">
-                
-                    <input type="text" name="langue" size="20"  maxlength="35">
-                    <input type="text" name="niveau" size="20"  maxlength="35"><br>
-                    <input type="submit" value="Envoyer" name="envoyer">
-                
-            </form>
-            
-            <?php
+        <?php
             
             // On commence par récupérer les champs
-                if(isset($_POST['langue']))      $langue=$_POST['langue'];
+                if(isset($_POST['langue']))      $competence=$_POST['langue'];
                 else      $langue="";
             
                 if(isset($_POST['niveau']))      $niveau=$_POST['niveau'];
                 else      $niveau="";
 
-
-
                 // On vérifie si les champs sont vides
-                if(empty($langue) OR empty($niveau)){
-                    echo '<font color="red">Attention, aucun champ ne peut rester vide !</font>';
-                    }
-
+//                if(empty($competence) OR empty($niveau) OR empty($type)){
+//                    echo '<font color="red">Attention, aucun champ ne peut rester vide !</font>';
+//                    }
             ?>
-            
-            
-            
-            
-         
 
-            
-        </body>
-    </html>
+<?php include 'bottom.php'; ?>

@@ -1,32 +1,4 @@
-<?php //require '../connexion/connexion.php'; ?>
-  
-<?php 
-session_start();
-if(isset($_SESSION['connexion']) && $_SESSION['connexion']=='connecté'){//si la personne est connecté 
-    //et la valeur est bien celle de la page authentification
-        $id_utilisateur=$_SESSION['id_utilisateur'];
-        $prenom=$_SESSION['prenom'];
-        $nom=$_SESSION['nom'];
-        //echo $_SESSION['connexion']; vérification de la connexion
-}else{//l'utilisateur n'est pas connecté
-        header('location:authentification.php');
-}
-
-//pour se déconnecter
-if(isset($_GET['deconnect'])){
-    $_SESSION['connexion'] = ''; //on vide les variables de session
-    $_SESSION['id_utilisateur'] = '';
-    $_SESSION['prenom'] = '';
-    $_SESSION['nom'] = '';
-
-    unset($_SESSION['connexion']);//on supprime cette variable
-
-    session_destroy();//on detruit la session
-
-    header('location:../index.php');
-}
-
-?>    
+<?php include 'top.php'; ?>    
 
 <?php
      
@@ -71,49 +43,117 @@ if(isset($_GET['deconnect'])){
                                     WHERE id_utilisateur = '$id_utilisateur' ";
         
         $pdoCV->query($sql);
-
-        
-       // header("location:../admin/utilisateur.php");
+        header("location:utilisateur.php");
         exit();
         
     }//ferme ifisset suppr
 }
 ?>
-<?php require '../inc/head.inc.php'; ?>
 
-<body>
-    <header>
-        <h1>Site CV - Abdelkrim Benbakhti</h1>
-        <h2>Projet professionel: Intégrateur/Développeur Web</h2>
-      </header>
+<?php require 'nav.html'; ?>
 
-      <div id="mainContent">
-          <h1 id="espaceAdmin">Espace administratif du site CV-MODIFS IDENTITé</h1>
-            <?php
-            $sql = $pdoCV->query("SELECT * FROM t_utilisateur");
-            $resultat = $sql->fetch();
-            ?>
+        <?php
+              //affichage d'une seule info
+        $sql = $pdoCV->query("SELECT * FROM t_utilisateur");
+        $resultat = $sql->fetch();
+        echo '<div class="identite"> Bonjour ' .$resultat['prenom'].' '.$resultat['nom'].'<br/>
+        </div><br><br>';
+        ?>
+         
 
-          <?= '<div class="identite">'; ?>
-        <form method="post">
-              <?= ' <input type="text" name="etat_civil" size="20" maxlenght="35" value="'.$resultat['etat_civil'].'"><br/>'; ?>
-              <?= ' <input type="text" name="prenom" size="20" maxlenght="35" value="'.$resultat['prenom'].'"><br/>'; ?>
-              <?= ' <input type="text" name="nom" size="20" maxlenght="35" value="'.$resultat['nom'].'"><br/>'; ?>
-              <?='<input type="text" name="adresse" size="35" maxlenght="35" value="'.$resultat['adresse'].'"><br/>'; ?>
-              <?=' <input type="text" name="ville" size="20" maxlenght="35" value="'.$resultat['ville'].'"><br/>'; ?>
-              <?='<input type="text" name="code_postal" size="20" maxlenght="35" value="'.$resultat['code_postal'].'"><br/>';?>
-              <?=' <input type="text" name="email" size="20" maxlenght="35" value="'.$resultat['email'].'"><br/>'; ?>
-              <?= ' <input type="text" name="telephone" size="20" maxlenght="35" value="'.$resultat['telephone'].'"><br/>'; ?>
-              <?=' <input type="text" name="age" size="20" maxlenght="35" value="'.$resultat['age'].'"><br/>'; ?>
-              <?= ' <input type="text" name="mdp" size="20" maxlenght="35" value="'.$resultat['mdp'].'"><br/>'; ?>
-              <?= ' <input type="text" name="sexe" size="20" maxlenght="35" value="'.$resultat['sexe'].'"><br/>'; ?>
-              <?= ' <input type="text" name="statut_marital" size="20" maxlenght="35" value="'.$resultat['statut_marital'].'"><br/>'; ?>
-              <?= ' <input type="text" name="date_de_naissance" size="20" maxlenght="35" value="'.$resultat['date_de_naissance'].'"><br/>'; ?>
-              <?= ' <input type="submit" value="Envoyer" name="envoyer">'; ?>
-            
-              <?= $resultat['avatar'].'<br/>'; ?>
-            <?= '<img src="../img/" alt=""></div>'; ?>
-        </form>
+ <!-- FORMULAIRE -->
+            <div class="row">
+                <form class="form-horizontal" method="POST" action="">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Civilité</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="etat_civil" class="form-control" id="inputEmail3" value="<?= isset($resultat['etat_civil']) ? $resultat['etat_civil'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Prénom</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="prenom" class="form-control" id="inputEmail3" value="<?= isset($resultat['prenom']) ? $resultat['prenom'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Nom</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="nom" class="form-control" id="inputEmail3" value="<?= isset($resultat['nom']) ? $resultat['nom'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Adresse</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="adresse" class="form-control" id="inputEmail3" value="<?= isset($resultat['adresse']) ? $resultat['adresse'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Ville</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="ville" class="form-control" id="inputEmail3" value="<?= isset($resultat['ville']) ? $resultat['ville'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Code postal</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="code_postal" class="form-control" id="inputEmail3" value="<?= isset($resultat['code_postal']) ? $resultat['code_postal'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="email" class="form-control" id="inputEmail3" value="<?= isset($resultat['email']) ? $resultat['email'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Téléphone</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="telephone" class="form-control" id="inputEmail3" value="<?= isset($resultat['telephone']) ? $resultat['telephone'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Age</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="age" class="form-control" id="inputEmail3" value="<?= isset($resultat['age']) ? $resultat['age'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">mdp</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="mdp" class="form-control" id="inputEmail3" value="<?= isset($resultat['mdp']) ? $resultat['mdp'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Sexe</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="sexe" class="form-control" id="inputEmail3" value="<?= isset($resultat['sexe']) ? $resultat['sexe'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Statut marital</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="statut_marital" class="form-control" id="inputEmail3" value="<?= isset($resultat['statut_marital']) ? $resultat['statut_marital'] : null; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Date de naissance</label>
+                    <div class="col-sm-6">
+                      <input type="text" name="date_de_naissance" class="form-control" id="inputEmail3" value="<?= isset($resultat['date_de_naissance']) ? $resultat['date_de_naissance'] : null; ?>">
+                    </div>
+                  </div>
+                    
+                 
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <input type="submit" class="btn btn-default"></input>
+                    </div>
+                  </div>
+                </form>
+            </div><!-- end row -->      
+
+         
+
           
           <?php
             
@@ -160,16 +200,10 @@ if(isset($_GET['deconnect'])){
                 
 
                 // On vérifie si les champs sont vides
-                if(empty($civilite) OR empty($prenom) OR empty($nom) OR empty($adresse) OR empty($ville) OR empty($code_postal) OR empty($email) OR empty($telephone) OR empty($age) OR empty($mdp) OR empty($sexe) OR empty($statut_marital) OR empty($date_de_naissance)){
-                    echo '<font color="red">Attention, aucun champ ne peut rester vide !</font>';
-                    }
+//                if(empty($civilite) OR empty($prenom) OR empty($nom) OR empty($adresse) OR empty($ville) OR empty($code_postal) OR empty($email) OR empty($telephone) OR empty($age) OR empty($mdp) OR empty($sexe) OR empty($statut_marital) OR empty($date_de_naissance)){
+//                    echo '<font color="red">Attention, aucun champ ne peut rester vide !</font>';
+//                    }
 
             ?>
-    
-
-    
-    
-              </div>
-
-        </body>
-    </html>
+          
+<?php include 'bottom.php'; ?>
