@@ -1,7 +1,7 @@
 <?php include '../inc/fonctions.inc.php'; ?>
 <?php 
   //EXPERIENCES  
-    $sql_exp = $pdoCV->query("SELECT * FROM t_experiences");
+    $sql_exp = $pdoCV->query("SELECT * FROM t_experiences ORDER BY id_experience DESC");
     $sql_exp -> execute();
     $nb_exp= $sql_exp->rowCount(); 
 ?>
@@ -191,7 +191,7 @@
             <?php } ?>
           </div>
           <!-- Skills -->
-          <div class="skills parallax-window col-xs-12 col-sm-6" data-parallax="scroll" data-image-src="images/img8.jpg" data-mh="match-edu">
+          <div class="skills parallax-window col-xs-12 col-sm-6" data-parallax="scroll" data-image-src="images/img8.jpg" data-mh="match-edu" id="comp1">
             <div class="black-layer newMiddleContent">
               <div class="middle-content">
                 <!-- Skill 1 -->

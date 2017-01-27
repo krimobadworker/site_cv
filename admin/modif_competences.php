@@ -23,7 +23,7 @@
                             WHERE id_competence = '$id_competence' ";
 
         $pdoCV->query($sql);
-        header("location:modif_competences.php");
+        header("location:competences.php");
         exit();
 
     }//ferme ifisset suppr
@@ -54,15 +54,31 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">Type (langage ou logiciel)</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Type</label>
                     <div class="col-sm-6">
-                      <input type="text" name="type" class="form-control" id="inputEmail3" value="<?= isset($resultat2['type']) ? $resultat2['type'] : null; ?>">
+                        <select class="form-control" name="type">
+                          <option disabled selected>-- Type --</option>
+                          <option value="langage">Langage</option>
+                          <option value="logiciel">Logiciel</option>
+                        </select>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">Niveau</label>
                     <div class="col-sm-6">
-                      <input type="text" name="niveau" class="form-control" id="inputEmail3" value="<?= isset($resultat2['niveau']) ? $resultat2['niveau'] : null; ?>">
+                        <select class="form-control" name="niveau">
+                          <option disabled selected>-- Niveau --</option>
+                          <option value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="30">30</option>
+                          <option value="40">40</option>
+                          <option value="50">50</option>
+                          <option value="60">60</option>
+                          <option value="70">70</option>
+                          <option value="80">80</option>
+                          <option value="90">90</option>
+                          <option value="100">100</option>
+                        </select>
                     </div>
                   </div>
                   <div class="form-group">

@@ -47,7 +47,7 @@
                     </div>
                   </div>
                     <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">Icon (font-awesome)</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Icon (Font Awesome)</label>
                     <div class="col-sm-6">
                       <input type="text" name="fa_icon" class="form-control" id="inputEmail3" placeholder="Icon">
                     </div>
@@ -71,7 +71,7 @@
                     <table class="table table-bordered">
                         <tr>
                             <th>Loisir</th>
-                            <th>Icon</th>
+                            <th>Icon (Font Awesome)</th>
                             <th>Modifier</th>
                             <th>Supprimer</th>
                         </tr>

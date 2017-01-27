@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Mar 24 Janvier 2017 à 16:41
+-- Généré le :  Ven 27 Janvier 2017 à 16:51
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  5.6.24
 
@@ -38,17 +38,12 @@ CREATE TABLE `t_competences` (
 --
 
 INSERT INTO `t_competences` (`id_competence`, `competence`, `niveau`, `type`) VALUES
-(1, 'Photoshop', 70, 'logiciel'),
 (2, 'Illustrator', 80, 'logiciel'),
 (4, 'InDesign', 50, 'logiciel'),
-(6, 'After Effects ', 50, 'logiciel'),
-(7, 'Premiere Pro', 80, 'logiciel'),
-(8, 'Dreamweaver', 50, 'logiciel'),
-(9, 'HTML5', 70, 'langage'),
-(10, 'CSS3', 70, 'langage'),
-(11, 'PHP', 40, 'langage'),
-(12, 'JavaScript', 20, 'langage'),
-(13, 'MySQL', 50, 'langage');
+(9, 'HTML5 / CSS3', 70, 'langage'),
+(11, 'PHP / MySQL', 40, 'langage'),
+(14, 'Photoshop', 70, 'logiciel'),
+(17, 'JavaScript', 20, 'langage');
 
 -- --------------------------------------------------------
 
@@ -62,18 +57,18 @@ CREATE TABLE `t_experiences` (
   `titre_e` text,
   `dates` text,
   `description` text NOT NULL,
-  `competence_id` int(11) NOT NULL,
-  `utlisateur_id` int(11) NOT NULL
+  `utlisateur_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `t_experiences`
 --
 
-INSERT INTO `t_experiences` (`id_experience`, `experience`, `titre_e`, `dates`, `description`, `competence_id`, `utlisateur_id`) VALUES
-(7, 'BdM Calvin Klein', 'Vendeur Conseillé ', '05/2010 05/2011', 'Sed si ille hac tam eximia fortuna propter utilitatem rei publicae frui non properat, ut omnia illa conficiat, quid ego, senator, facere debeo, quem, etiamsi ille aliud vellet, rei publicae consulere oporteret?', 0, 0),
-(16, 'McDonald''s Paris Luxembourg', 'Équipier puis Formateur Chargé de Dépôts\r\n', '06/2011 09/2013', 'Sed si ille hac tam eximia fortuna propter utilitatem rei publicae frui non properat, ut omnia illa conficiat, quid ego, senator, facere debeo, quem, etiamsi ille aliud vellet, rei publicae consulere oporteret?', 0, 1),
-(18, 'Café Concerto Londres Shepherd''s Bush', 'Serveur Barista', '09/2013 05/2014', 'Sed si ille hac tam eximia fortuna propter utilitatem rei publicae frui non properat, ut omnia illa conficiat, quid ego, senator, facere debeo, quem, etiamsi ille aliud vellet, rei publicae consulere oporteret?', 0, 1);
+INSERT INTO `t_experiences` (`id_experience`, `experience`, `titre_e`, `dates`, `description`, `utlisateur_id`) VALUES
+(7, 'BdM Calvin Klein', 'Vendeur Conseillé ', '05/2010  05/2011', 'Sed si ille hac tam eximia fortuna propter utilitatem rei publicae frui non properat, ut omnia illa conficiat, quid ego, senator, facere debeo, quem, etiamsi ille aliud vellet, rei publicae consulere oporteret?', 0),
+(16, 'McDonald''s Paris Luxembourg', 'Équipier puis Formateur Chargé de Dépôts\r\n', '06/2011 09/2013', 'Sed si ille hac tam eximia fortuna propter utilitatem rei publicae frui non properat, ut omnia illa conficiat, quid ego, senator, facere debeo, quem, etiamsi ille aliud vellet, rei publicae consulere oporteret?', 1),
+(18, 'Café Concerto Londres Shepherd''s Bush', 'Serveur Barista', '09/2013 05/2014', 'Sed si ille hac tam eximia fortuna propter utilitatem rei publicae frui non properat, ut omnia illa conficiat, quid ego, senator, facere debeo, quem, etiamsi ille aliud vellet, rei publicae consulere oporteret?', 1),
+(19, 'Leaflet Printing', 'Graphiste (Stage)', '12/2013 04/2014', 'Sed si ille hac tam eximia fortuna propter utilitatem rei publicae frui non properat, ut omnia illa conficiat, quid ego, senator, facere debeo, quem, etiamsi ille aliud vellet, rei publicae consulere oporteret?', 1);
 
 -- --------------------------------------------------------
 
@@ -109,6 +104,7 @@ CREATE TABLE `t_formulaire` (
   `id_formulaire` int(11) NOT NULL,
   `nom` varchar(20) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `subject` varchar(255) NOT NULL,
   `message` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -130,8 +126,8 @@ CREATE TABLE `t_langue` (
 
 INSERT INTO `t_langue` (`id_langue`, `langue`, `niveau`) VALUES
 (22, 'Anglais', 70),
-(25, 'Arabe', 80),
-(26, 'Bosniaque', 40);
+(25, 'Arabe', 50),
+(32, 'Espagnol', 20);
 
 -- --------------------------------------------------------
 
@@ -151,12 +147,12 @@ CREATE TABLE `t_loisir` (
 --
 
 INSERT INTO `t_loisir` (`id_loisir`, `loisir`, `fa_icon`, `utilisateur_id`) VALUES
-(3, 'Photographie', 'fa fa-camera-retro', 1),
+(3, 'Photographie', 'fa fa-camera-retro ', 1),
 (4, 'Cinéma', 'fa fa-play', 1),
 (6, 'Dessin', 'fa fa-paint-brush', 1),
 (7, 'Infographie', 'fa fa-laptop', 1),
 (9, 'Mode', 'fa fa-shopping-bag', 1),
-(10, 'Sport', 'fa fa-futbol-o', 1);
+(12, 'Sport', 'fa fa-futbol-o', 1);
 
 -- --------------------------------------------------------
 
@@ -250,8 +246,7 @@ ALTER TABLE `t_competences`
 -- Index pour la table `t_experiences`
 --
 ALTER TABLE `t_experiences`
-  ADD PRIMARY KEY (`id_experience`),
-  ADD KEY `id_competence` (`competence_id`);
+  ADD PRIMARY KEY (`id_experience`);
 
 --
 -- Index pour la table `t_formation`
@@ -309,12 +304,12 @@ ALTER TABLE `t_utilisateur`
 -- AUTO_INCREMENT pour la table `t_competences`
 --
 ALTER TABLE `t_competences`
-  MODIFY `id_competence` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_competence` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT pour la table `t_experiences`
 --
 ALTER TABLE `t_experiences`
-  MODIFY `id_experience` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_experience` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT pour la table `t_formation`
 --
@@ -329,12 +324,12 @@ ALTER TABLE `t_formulaire`
 -- AUTO_INCREMENT pour la table `t_langue`
 --
 ALTER TABLE `t_langue`
-  MODIFY `id_langue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_langue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT pour la table `t_loisir`
 --
 ALTER TABLE `t_loisir`
-  MODIFY `id_loisir` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_loisir` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pour la table `t_portfolio`
 --

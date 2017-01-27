@@ -25,7 +25,7 @@
                             WHERE id_experience = '$id_experience' ";
 
         $pdoCV->query($sql);
-        header("location:modif_experiences.php");
+        header("location:experiences.php");
         exit();
 
     }//ferme ifisset suppr
